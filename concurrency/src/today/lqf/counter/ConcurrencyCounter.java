@@ -44,8 +44,11 @@ public class ConcurrencyCounter {
      */
     public void count5() {
         lock.lock();
-        idx5++;
-        lock.unlock();
+        try {
+            idx5++;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public int result() {
