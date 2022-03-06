@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class LeetCode2100 {
 
-    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+    public List<Integer> goodDaysToRobBankBefore(int[] security, int time) {
         List<Integer> list = new ArrayList<>();
 
         int len = security.length;
@@ -43,34 +43,34 @@ public class LeetCode2100 {
 //        System.out.println(suffixTotal);
 //        System.out.println(time);
 //        System.out.println("=======");
-        
+
         for (int i = time, j = 2 * time - 1; i < len - time; i++, j++) {
             if (time == 0) {
                 list.add(i);
                 continue;
             }
-            
+
             if (preList.size() == time) {
                 preTotal = preTotal - preList.get(0);
                 preList.remove(0);
                 suffixTotal = suffixTotal - suffixList.get(0);
-                suffixList.remove(0);  
-            } 
-            
+                suffixList.remove(0);
+            }
+
             if (security[i - 1] >= security[i]) {
                 preList.add(1);
                 preTotal++;
             } else {
                 preList.add(0);
             }
-            
+
             if (security[j] <= security[j + 1]) {
                 suffixList.add(1);
                 suffixTotal++;
             } else {
                 suffixList.add(0);
             }
-            
+
             if (preTotal == time && suffixTotal == time)
                 list.add(i);
 
@@ -78,6 +78,31 @@ public class LeetCode2100 {
 //            System.out.println(Integer.toBinaryString(suffix));
 //            System.out.println(Integer.toBinaryString(max));
 //            System.out.println(i + "\n");
+        }
+        return list;
+    }
+
+    public List<Integer> goodDaysToRobBank(int[] security, int time) {
+        List<Integer> list = new ArrayList<>();
+        
+        int len = security.length;
+        if (len < 2 * time + 1)
+            return list;
+
+        int[] pre = new int[len];
+        int[] suffix = new int[len];
+        for (int i = 1; i < len; i++) {
+            if (security[i - 1] >= security[i]) {
+                pre[i] = pre[i - 1] + 1;
+            }
+            if (security[len - 1 - i] <= security[len - i]) {
+                suffix[len - 1 - i] = suffix[len - i] + 1;
+            }
+        }
+
+        for (int i = time; i < len - time; i++) {
+            if (pre[i] >= time && suffix[i] >= time)
+                list.add(i);
         }
         return list;
     }
