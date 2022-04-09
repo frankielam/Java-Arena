@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class LeetCode429 {
 
-    public List<List<Integer>> levelOrder(Node root) {
+    public List<List<Integer>> levelOrderBefore(Node root) {
         List<List<Integer>> list = new ArrayList<>();
         Queue<Node> queue = new LinkedList<>();
 
@@ -40,6 +39,30 @@ public class LeetCode429 {
         if (subList.size() > 0) {
             list.add(subList);
         }
+        return list;
+    }
+
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> list = new ArrayList<>();
+        Queue<Node> queue = new LinkedList<>();
+        if (root != null) {
+            queue.add(root);
+        }
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> subList = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                Node node = queue.poll();
+                subList.add(node.val);
+                List<Node> childs = node.children;
+                for (Node child : childs) {
+                    queue.add(child);
+                }
+            }
+            list.add(subList);
+        }
+
         return list;
     }
 
